@@ -25,4 +25,4 @@ For collaboration:
 
 Owner: Faith
 
-Collaborator: Name 2
+Collaborator: Joy
