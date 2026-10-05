@@ -13,6 +13,7 @@ toc: true
 # install.packages("tidycensus")
 # install.packages("reactable")
 # install.packages("ggpubr")
+#
 
 library(tidycensus)  # star of the show, what we will use to import data
 library(tidyverse) # you know her
