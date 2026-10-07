@@ -272,7 +272,7 @@ Investigating (insert variable here) on Oahu at the census tract level.
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 oahu_poverty <- get_acs(
   geography = "tract",
-  variables = c(percent_poverty = "DP03_0119P"),
+  variables = c(percent_poverty = "DP02_0142"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
