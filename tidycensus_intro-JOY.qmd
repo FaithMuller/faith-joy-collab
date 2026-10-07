@@ -1,6 +1,6 @@
 ---
 title: "tidycensus Intro & GitHub Collab"
-author: "Amber Camp" 
+author: "Liliyah-Joy Quel-Kaina" 
 date: "`r Sys.Date()`"
 format: html
 editor: visual
@@ -42,7 +42,7 @@ API stands for Application Programming Interface. Here is the idea:
 [Request your own](https://api.census.gov/data/key_signup.html) or use Amber's (below).
 
 ```{r Define API Key, message=FALSE}
-census_api_key("")
+census_api_key("0bd8b9901961e461e97ec29b3dbedde7c46a2d77")
 ```
 
 ## Import Variables
@@ -109,9 +109,9 @@ Now let's look at family poverty in Honolulu County over time
 
 ```{r}
 # get the data (looking at ____)
-NAME <- get_acs(
+mine <- get_acs(
   geography = "tract",
-  variables = c(NAME = "DP02_0158"),
+  variables = c(computer_access = "DP02_0152"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -120,16 +120,16 @@ NAME <- get_acs(
   dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
 
 # map it
-oahu_unemployment_map <- ggplot(NAME) +
+computer_map <- ggplot(mine) +
   geom_sf_interactive(
     aes(
-      fill = percent_unemploymentE,
-      tooltip = paste(NAME, ": ", percent_unemploymentE, "%"),
+      fill = computer_accessE,
+      tooltip = paste(NAME, ": ", computer_accessE, "%"),
       data_id = NAME)) +
   scale_fill_viridis_c(option = "plasma") +
   theme_void() 
 
-girafe(ggobj = oahu_unemployment_map, width = 700, height = 400)
+girafe(ggobj = computer_map, width = 700, height = 400)
 
 ```
 
