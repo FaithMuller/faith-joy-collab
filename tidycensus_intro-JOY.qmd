@@ -1,6 +1,6 @@
 ---
 title: "tidycensus Intro & GitHub Collab"
-author: "Amber Camp" 
+author: "Liliyah-Joy Quel-Kaina" 
 date: "`r Sys.Date()`"
 format: html
 editor: visual
@@ -109,7 +109,11 @@ Now let's look at family poverty in Honolulu County over time
 
 ```{r}
 # get the data (looking at ____)
+<<<<<<< HEAD
 amber <- get_acs(
+=======
+mine <- get_acs(
+>>>>>>> 918ee3d272656268869c6eb82c61d2ee9e0aa48c
   geography = "tract",
   variables = c(computer_access = "DP02_0152"),
   state = "HI",
@@ -120,11 +124,19 @@ amber <- get_acs(
   dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
 
 # map it
+<<<<<<< HEAD
 computer_map <- ggplot(amber) +
   geom_sf_interactive(
     aes(
       fill = computer_accessE,
       tooltip = paste(NAME, ": ", computer_accessE),
+=======
+computer_map <- ggplot(mine) +
+  geom_sf_interactive(
+    aes(
+      fill = computer_accessE,
+      tooltip = paste(NAME, ": ", computer_accessE, "%"),
+>>>>>>> 918ee3d272656268869c6eb82c61d2ee9e0aa48c
       data_id = NAME)) +
   scale_fill_viridis_c(option = "plasma") +
   theme_void() 
