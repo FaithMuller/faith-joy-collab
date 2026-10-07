@@ -243,9 +243,9 @@ REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Co
 Investigating (insert variable here) on Oahu at the census tract level.
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
-oahu_poverty <- get_acs(
+Russ_pop <- get_acs(
   geography = "tract",
-  variables = c(percent_poverty = "DP02_0142"),
+  variables = c(percent_rpop = "DP02_0142"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -260,7 +260,16 @@ oahu_poverty <- get_acs(
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
+russian_pop_map <- ggplot(Russ_pop) +
+  geom_sf_interactive(
+    aes(
+      fill = percent_rpopE,
+      tooltip = paste(NAME, ": ", percent_rpopE, "%"),
+      data_id = NAME)) +
+  scale_fill_viridis_c(option = "mako") +
+  theme_void() 
 
+girafe(ggobj = russian_pop_map, width = 700, height = 400)
 ```
 
 ### Time Series
