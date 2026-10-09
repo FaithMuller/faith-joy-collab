@@ -246,7 +246,7 @@ Investigating (insert variable here) on Oahu at the census tract level.
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 Russ_pop <- get_acs(
   geography = "tract",
-  variables = c(percent_rpop = "DP02_0142"),
+  variables = c(percent_rpop = "DP02_0142P"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -282,7 +282,7 @@ names(years) <- years
 russian_ancestry_2014_2024 <- map_dfr(years, ~{
   get_acs(
     geography = "county",
-    variables = c(percent_rpop = "DP02_0142"),
+    variables = c(percent_rpop = "DP02_0142E"),
     state = "HI",
     county = "Honolulu",
     year = .x,
@@ -297,6 +297,43 @@ ggplot(russian_ancestry_2014_2024, aes(x = year, y = estimate, group = 1)) +
 
 ```
 
+```{r}
+#There was a change in ancestry code between 2014: 2025. 2014-2018 -> Scottish, 2019 -> scottish irish, 2020-2024 -> Russian. 
+
+map_dfr(2014:2024, ~ load_variables(.x, "acs5/profile") %>%
+          filter(name == "DP02_0142") %>%
+          mutate(year = .x))
+
+map_dfr(2014:2024, ~ load_variables(.x, "acs5/profile") %>%
+          filter(str_detect(label, "ANCESTRY"),
+                 str_detect(label, "Scottish$"),
+                 !str_detect(name, "P$|PR_")) %>%
+          mutate(year = .x)) %>%
+  select(year, name, label)
+```
+
+```{r}
+years <- 2020:2024 
+names(years) <- years
+
+russian_ancestry_2020_2024 <- map_dfr(years, ~{
+  get_acs(
+    geography = "county",
+    variables = c(percent_rpop = "DP02_0142P"),
+    state = "HI",
+    county = "Honolulu",
+    year = .x,
+    survey = "acs5")}, .id = "year")
+
+ggplot(russian_ancestry_2020_2024, aes(x = year, y = estimate, group = 1)) + 
+  geom_line() + 
+  geom_point() +
+  labs(title = "Percent Russian Ancestry, Honolulu County (ACS Rolling 5-year estimates)",
+       x = "ACS Release Year (5-year window)",
+       y = "Percent of Population")
+
+```
+
 ### Scatter Plot
 
 Exploring the relationship between (insert variable here) and (insert variable here) with a scatter plot
@@ -304,7 +341,7 @@ Exploring the relationship between (insert variable here) and (insert variable h
 ```{r Get Data for Scatter Plot, message=FALSE}
 Oahu_russian_ancestry_college_education  <- get_acs(
   geography = "tract",
-  variables = c(percent_rpop = "DP02_0142",
+  variables = c(percent_rpop = "DP02_0142P",
                 percent_BA = "DP02_0068P"),
   state = "HI",
   county = "Honolulu",
@@ -322,7 +359,7 @@ SCRATCH <- ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpop
   geom_smooth( method = "lm") + 
   stat_cor() + 
   theme_minimal() + 
-  labs(title = "Comparing Rates of Higher Education to Those of Russian Ancestory, Honolulu County",
+  labs(title = "People with Russian Ancestry vs Bachelors Degree Rates By Census Tract, Honolulu County",
        subtitle = "ACS 5-year, 2024 release",
        x = "Percent of Russian Population  ",
        y = "Percent with a BA or higher",
@@ -338,7 +375,7 @@ ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpopE,y = perce
   geom_smooth( method = "lm") + 
   stat_cor() + 
   theme_minimal() + 
-  labs(title = "Comparing Rates of Higher Education to Those of Russian Ancestory, Honolulu County",
+  labs(title = "Comparing Rates of Higher Education to Those of Russian Ancestry, Honolulu County",
        subtitle = "ACS 5-year, 2024 release",
        x = "Percent of Russian Population  ",
        y = "Percent with a BA or higher",
@@ -346,3 +383,7 @@ ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpopE,y = perce
 ```
 
 ### Describe what you found
+
+Time Series: We can only look at the time series between 2020 and 2024 due to the current Russian code being used for Scottish and Scottish-Irish in the years before. But from 2020 - 2024 you can see that the ACS 5-year releases is pretty stable at 0.3% of residents on Honolulu county reporting to have Russian ancestry, but note we don have enough data on different years . Also due to the census rounding unless there is a big change all the values will remain the same.
+
+Scatter plot: Across Honolulu Country census tract you can see that the percentage of residence with Russian ancestry has a weak positive correlation. Most Census Tracts have very little individuals with Russian ancestry. You can see a variance in education range among those Census tracts with 0% is Russian ancestry. The confidence band widens as it hits around 3% of Russian population due to fewer and fewer tracts reporting more than 3% Russian ancestry. You will notice the Census tract reporting 6.4% (highest reported Russian ancestry) site below the regression line which seems to be a trend with census tracts report higher Russian ancestry percentage.
