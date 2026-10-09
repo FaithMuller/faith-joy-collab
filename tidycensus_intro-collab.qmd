@@ -19,6 +19,7 @@ library(tidyverse) # you know her
 library(reactable) # makes nice looking, interactive tables
 library(ggiraph) # makes interactive graphs and maps
 library(ggpubr) # does some statistics and prints the results on our graphs
+library(plotly)
 options(progress_enabled = FALSE)
 ```
 
@@ -110,7 +111,7 @@ Now let's look at family poverty in Honolulu County over time
 # get the data (looking at ____)
 NAME <- get_acs(
   geography = "tract",
-  variables = c(NAME = "DP02_0158"),
+  variables = c(NAME = "DP02_0152"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -300,9 +301,35 @@ ggplot(russian_ancestry_2014_2024, aes(x = year, y = estimate, group = 1)) +
 
 Exploring the relationship between (insert variable here) and (insert variable here) with a scatter plot
 
-```{r, message=FALSE, warning=FALSE, results='hide'}
+```{r Get Data for Scatter Plot, message=FALSE}
+Oahu_russian_ancestry_college_education  <- get_acs(
+  geography = "tract",
+  variables = c(percent_rpop = "DP02_0142",
+                percent_BA = "DP02_0068P"),
+  state = "HI",
+  county = "Honolulu",
+  geometry = TRUE,
+  output = "wide",
+  year = 2024) %>% 
+  dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
 
 
+```
+
+```{r Scatter Plot, warning=FALSE, message=FALSE}
+SCRATCH <- ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpopE,y = percent_BAE)) +
+  geom_point() +
+  geom_smooth( method = "lm") + 
+  stat_cor() + 
+  theme_minimal() + 
+  labs(title = "Comparing Rates of Higher Education to Those of Russian Ancestory, Honolulu County",
+       subtitle = "ACS 5-year, 2024 release",
+       x = "Percent of Russian Population  ",
+       y = "Percent with a BA or higher",
+       caption = "Shaded area represents margin of error around the estimate")
+
+ggplotly(SCRATCH)
+  
 ```
 
 ### Describe what you found
