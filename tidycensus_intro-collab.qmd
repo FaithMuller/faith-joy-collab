@@ -384,6 +384,8 @@ ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpopE,y = perce
 
 ### Describe what you found
 
+Map:
+
 Time Series: We can only look at the time series between 2020 and 2024 due to the current Russian code being used for Scottish and Scottish-Irish in the years before. But from 2020 - 2024 you can see that the ACS 5-year releases is pretty stable at 0.3% of residents on Honolulu county reporting to have Russian ancestry, but note we don have enough data on different years . Also due to the census rounding unless there is a big change all the values will remain the same.
 
 Scatter plot: Across Honolulu Country census tract you can see that the percentage of residence with Russian ancestry has a weak positive correlation. Most Census Tracts have very little individuals with Russian ancestry. You can see a variance in education range among those Census tracts with 0% is Russian ancestry. The confidence band widens as it hits around 3% of Russian population due to fewer and fewer tracts reporting more than 3% Russian ancestry. You will notice the Census tract reporting 6.4% (highest reported Russian ancestry) site below the regression line which seems to be a trend with census tracts report higher Russian ancestry percentage.
