@@ -70,7 +70,7 @@ Let's investigate family poverty on Oahu at the census tract level.
 ```{r Import Data}
 oahu_poverty <- get_acs(
   geography = "tract",
-  variables = c(percent_poverty = "DP03_0119P"),
+  variables = c(percent_poverty = "DP02_0111P"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -133,7 +133,7 @@ girafe(ggobj = computer_map, width = 700, height = 400)
 
 ```
 
-# Wednesday: 
+# Wednesday:
 
 ```{r}
 fade <- get_acs(
@@ -270,9 +270,9 @@ REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Co
 Investigating (insert variable here) on Oahu at the census tract level.
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
-oahu_poverty <- get_acs(
+Russ_pop <- get_acs(
   geography = "tract",
-  variables = c(percent_poverty = "DP02_0142"),
+  variables = c(percent_rpop = "DP02_0142P"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -280,16 +280,27 @@ oahu_poverty <- get_acs(
   year = 2024) %>% 
   dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900") # filters out tract in NW Hawaiian Islands that makes map very small and Mamala Bay Golf Course that has %100 percent of families living below the poverty line(??)
 
+
 ```
 
 ### Mapping
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
+russian_pop_map <- ggplot(Russ_pop) +
+  geom_sf_interactive(
+    aes(
+      fill = percent_rpopE,
+      tooltip = paste(NAME, ": ", percent_rpopE, "%"),
+      data_id = NAME)) +
+  scale_fill_viridis_c(option = "mako") +
+  labs(fill = "% Russian ancestry") +
+  theme_void()
 
+girafe(ggobj = russian_pop_map, width = 700, height = 400)
 ```
 
-### Time Series
+###  Time Series
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 years <- 2014:2024 # specify years
@@ -317,6 +328,7 @@ ggplot(russian_ancestry_2014_2024, aes(x = year, y = estimate, group = 1)) +
 Exploring the relationship between (insert variable here) and (insert variable here) with a scatter plot
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
+
 
 
 ```
