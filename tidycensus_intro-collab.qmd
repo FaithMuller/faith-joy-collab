@@ -65,10 +65,10 @@ reactable(acs_2024_variables, filterable = TRUE, showPageSizeOptions = TRUE, min
 
 Let's investigate family poverty on Oahu at the census tract level.
 
-**DP03_0119P** is the code for Percent!!PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL!!All families
+**DP03_0119P** is the code for Percent!!PERCENTAGE OF FAMILIES AND PEOPLE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL!!All families!!
 
 ```{r Import Data}
-oahu_poverty <- get_acs(
+oahu_ <- get_acs(
   geography = "tract",
   variables = c(percent_poverty = "DP03_0119P"),
   state = "HI",
@@ -92,7 +92,7 @@ oahu_poverty_map <- ggplot(oahu_poverty) +
   geom_sf_interactive(
     aes(
       fill = percent_povertyE,
-      tooltip = paste(NAME, ": ", percent_povertyE, "%"),
+      tooltip = paste(NAME, ": ", percent_povertyE),
       data_id = NAME)) +
   scale_fill_viridis_c(option = "plasma") +
   theme_void() 
@@ -111,7 +111,7 @@ Now let's look at family poverty in Honolulu County over time
 # get the data (looking at ____)
 NAME <- get_acs(
   geography = "tract",
-  variables = c(NAME = "DP02_0152"),
+  variables = c(percent_unemployment = "DP02_0152"),
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
@@ -273,6 +273,14 @@ russian_pop_map <- ggplot(Russ_pop) +
 girafe(ggobj = russian_pop_map, width = 700, height = 400)
 ```
 
+```{r}
+Russ_pop %>%
+  sf::st_drop_geometry() %>%
+  arrange(desc(percent_rpopE)) %>%
+  select(NAME, percent_rpopE, percent_rpopM) %>%
+  head(5)
+```
+
 ### Time Series
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
@@ -384,7 +392,7 @@ ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpopE,y = perce
 
 ### Describe what you found
 
-Mapping:
+Mapping: The map we created shows the estimated percentage of people with Russian ancestry on Oahu. The darker colored areas mean low percentage and lighter colors mean higher ones. We also added a section that tells you the top 5 areas with the highest Russian ancestry populations in Oahu. The highest is Schofield Barracks at 6.4% and Ka'a'awa in second with 5%. We found that some of these numbers have big margins of error, so the real percentages could be a lot lower.
 
 Time Series: We can only look at the time series between 2020 and 2024 due to the current Russian code being used for Scottish and Scottish-Irish in the years before. But from 2020 - 2024 you can see that the ACS 5-year releases is pretty stable at 0.3% of residents on Honolulu county reporting to have Russian ancestry, but note we don have enough data on different years . Also due to the census rounding unless there is a big change all the values will remain the same.
 
