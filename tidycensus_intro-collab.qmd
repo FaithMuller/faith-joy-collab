@@ -392,7 +392,8 @@ ggplot(Oahu_russian_ancestry_college_education , aes(x = percent_rpopE,y = perce
 
 ### Describe what you found
 
-Mapping: The map we created shows the estimated percentage of people with Russian ancestry on Oahu. The darker colored areas mean low percentage and lighter colors mean higher ones. We also added a section that tells you the top 5 areas with the highest Russian ancestry populations in Oahu. The highest is Schofield Barracks at 6.4% and Ka'a'awa in second with 5%. We found that some of these numbers have big margins of error, so the real percentages could be a lot lower.
+Mapping: The map we created shows the estimated percentage of people with Russian ancestry on Oahu. The darker colored areas mean low percentage and lighter colors mean higher ones. We also added a section that tells you the top 5 areas with the highest Russian ancestry populations in Oahu. The highest is
+Hendrich Street-Kolekole Avenue at 6.4% and Ka'a'awa in second with 5%. We found that some of these numbers have big margins of error, so the real percentages could be a lot lower.
 
 Time Series: We can only look at the time series between 2020 and 2024 due to the current Russian code being used for Scottish and Scottish-Irish in the years before. But from 2020 - 2024 you can see that the ACS 5-year releases is pretty stable at 0.3% of residents on Honolulu county reporting to have Russian ancestry, but note we don have enough data on different years . Also due to the census rounding unless there is a big change all the values will remain the same.
 
